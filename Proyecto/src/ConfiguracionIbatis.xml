@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration
+PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+
+
+
+
+
+
+	<typeAliases>
+
+		<typeAlias alias="distritobeanIbatis" type="com.proyecto.bean.distritoBean" />
+		<typeAlias alias="zonaBeanIbatis" type="com.proyecto.bean.zonaBean" />
+		<typeAlias alias="moderadorBeanIbatis" type="com.proyecto.bean.moderadorBean" />
+		<typeAlias alias="tipoagravioBeanIbatis" type="com.proyecto.bean.tipoagravioBean" />
+		<typeAlias alias="agraviadosBeanIbatis" type="com.proyecto.bean.agraviadosBean" />
+		<typeAlias alias="incidenciasBeanIbatis" type="com.proyecto.bean.incidenciasBean" />
+
+		<typeAlias alias="filtroIncidenciasBeanIbatis" type="com.proyecto.bean.filtroIncidenciasBean" />
+
+
+
+		<typeAlias alias="detalleBeanIbatis" type="com.proyecto.bean.detalleAsignaModerador" />
+
+
+
+
+		<typeAlias alias="asignaFotosEvidenciaBeanIbatis" type="com.proyecto.bean.asignaFotos" />
+	</typeAliases>
+
+
+	<!-- los valores de la conexion -->
+	<environments default="development">
+		<environment id="development">
+			<transactionManager type="JDBC" />
+			<dataSource type="UNPOOLED">
+				<property name="driver" value="com.mysql.jdbc.Driver" />
+				<property name="url" value="jdbc:mysql://localhost:3306/bd_expresatedb05" />
+				<property name="username" value="root" />
+				<property name="password" value="holt123456" />
+<!--(poner esto en las pc de cibertec, para ejecutar el proyecto)===> 	<property name="password" 			value=mysql/> -->
+			</dataSource>
+		</environment>
+	</environments>
+
+
+	<mappers>
+		<mapper resource="mapper.xml" />
+	</mappers>
+
+</configuration>

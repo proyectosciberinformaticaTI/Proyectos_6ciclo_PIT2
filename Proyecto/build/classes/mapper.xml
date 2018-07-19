@@ -1,0 +1,1032 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="dawi">
+
+
+
+	<insert id="SQL_insertaRegistro" parameterType="incidenciasBeanIbatis"
+		keyProperty="idtb_incidencias" useGeneratedKeys="true">
+		insert into
+		tb_incidencias(idagraviado,idtb_zona,agresor,fecharegistro,idtb_tipo_agravio,idtb_distrito,descripcion)
+		values
+		(#{agraviados.idagraviado},#{zona.idtb_zona},#{agresor},curdate(),#{tipo.idtb_tipo_agravio},#{distrito.idtb_distrito},#{descripcion})
+	</insert>
+
+
+
+
+
+	<insert id="SQL_insertaRegistroModeradores" parameterType="moderadorBeanIbatis"
+		keyProperty="idmoderador" useGeneratedKeys="true">
+		insert into
+		tb_moderador(nom_apellido,entidad,fotos,dni,correo,celular,telefono,idtb_distrito,usuario,contrasena)
+		values
+		(#{nom_apellido},#{entidad},#{fotosBytes},#{dni},#{correo},#{celular},#{telefono},#{distrito.idtb_distrito},#{usuario},#{contrasena})
+	</insert>
+
+
+
+
+
+
+
+
+
+
+
+
+
+	<insert id="SQL_insertaAgraviados" parameterType="agraviadosBeanIbatis"
+		keyProperty="idagraviado" useGeneratedKeys="true">
+
+		insert into tb_agraviados
+		(nom_apellido,fecha_nacimiento,sexo,direccion,telefono,correo,fotos,dni,usuario,contrasena)
+		values
+		(#{nom_apellido},#{fecha_nacimiento},#{sexo},#{direccion},#{telefono},#{correo},#{fotosBytes},#{dni},#{usuario},#{contrasena})
+	</insert>
+
+
+
+
+
+	<insert id="SQL_insertaRegistroAnonimo" parameterType="incidenciasBeanIbatis"
+		keyProperty="idtb_incidencias" useGeneratedKeys="true">
+		insert into
+		tb_incidencias(idtb_zona,agresor,fecharegistro,idtb_tipo_agravio,idtb_distrito,descripcion)
+		values
+		(#{zona.idtb_zona},#{agresor},curdate(),#{tipo.idtb_tipo_agravio},#{distrito.idtb_distrito},#{descripcion})
+	</insert>
+
+
+
+
+	<update id="SQL_cambioContrasena" parameterType="agraviadosBeanIbatis">
+		UPDATE tb_agraviados SET contrasena = #{nuevacontrasena} WHERE
+		idagraviado = #{idagraviado}
+	</update>
+
+
+	<resultMap id="mapdistrito" type="distritobeanIbatis">
+		<id property="idtb_distrito" column="idtb_distrito" />
+		<result property="nombre" column="nombre" />
+	
+	
+	
+	
+	
+	
+	
+	
+	</resultMap>
+	<resultMap id="mapzona" type="zonaBeanIbatis">
+		<id property="idtb_zona" column="idtb_zona" />
+		<result property="nombre" column="nombre" />
+	</resultMap>
+	<resultMap id="mapTipoIncidencias" type="tipoagravioBeanIbatis">
+		<id property="idtb_tipo_agravio" column="idtb_tipo_agravio" />
+		<result property="nombre" column="nombre" />
+	</resultMap>
+
+
+	<select id="SQL_lista_todos_distritos_incidencias" resultMap="mapdistrito">
+		SELECT * from tb_distrito
+	</select>
+
+	<select id="SQL_lista_todos_zona_incidencias" resultMap="mapzona">
+		SELECT *
+		from tb_zona
+	</select>
+	<select id="SQL_lista_todos_tipo_incidencia" resultMap="mapTipoIncidencias">
+		SELECT *
+		from tb_tipo_agravio
+	</select>
+
+
+
+
+	<select id="SQL_login" parameterType="agraviadosBeanIbatis"
+		resultType="agraviadosBeanIbatis">
+		SELECT
+		idagraviado as idagraviado,
+		usuario as usuario,
+		contrasena as contrasena
+		FROM
+		tb_agraviados
+		WHERE
+		usuario = #{usuario} and
+		contrasena = #{contrasena}
+
+	</select>
+
+
+
+
+	<select id="SQL_login_administador" parameterType="moderadorBeanIbatis"
+		resultType="moderadorBeanIbatis">
+		SELECT
+		idmoderador as idmoderador,
+		usuario as usuario,
+		contrasena as contrasena
+		FROM
+		tb_moderador
+		WHERE
+		usuario = #{usuario} and
+		contrasena = #{contrasena} and cargomoderador like "ADMINISTRADOR"
+
+	</select>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	<select id="SQL_login_moderador" parameterType="moderadorBeanIbatis"
+		resultType="moderadorBeanIbatis">
+		SELECT
+		idmoderador as idmoderador,
+		usuario as usuario,
+		contrasena as contrasena
+		FROM
+		tb_moderador
+		WHERE
+		usuario = #{usuario} and contrasena = #{contrasena}
+
+	</select>
+
+
+	<resultMap id="mapTipoagravio" type="tipoagravioBeanIbatis">
+		<id property="idtb_tipo_agravio" column="idtb_tipo_agravio" />
+		<result property="nombre" column="nombre" />
+
+	</resultMap>
+	<resultMap id="mapZona" type="zonaBeanIbatis">
+		<id property="idtb_zona" column="idtb_zona" />
+		<result property="nombre" column="nombre" />
+
+
+	</resultMap>
+
+
+
+
+
+
+
+
+	<resultMap id="mapDistritos" type="distritobeanIbatis">
+		<id property="idtb_distrito" column="idtb_distrito" />
+		<result property="nombre" column="nombre" />
+		
+	</resultMap>
+
+
+
+
+
+
+
+
+
+
+	<resultMap id="mapAgraviado" type="agraviadosBeanIbatis">
+		<id property="idagraviado" column="idagraviado" />
+		<result property="nom_apellido" column="nom_apellido" />
+		<result property="fecha_nacimiento" column="fecha_nacimiento" />
+		<result property="sexo" column="sexo" />
+		<result property="direccion" column="direccion" />
+		<result property="referencia_direccion" column="referencia_direccion" />
+		<result property="telefono" column="telefono" />
+		<result property="correo" column="correo" />
+		<result property="testimonio" column="testimonio" />
+		<result property="fotos" column="fotos" />
+		<result property="dni" column="dni" />
+		<result property="usuario" column="usuario" />
+		<result property="contrasena" column="contrasena" />
+
+	</resultMap>
+
+
+
+	<select id="SQL_lista_valida_agraviados_dni_id" parameterType="agraviadosBeanIbatis"
+		resultType="agraviadosBeanIbatis">
+		select * from tb_agraviados where dni=#{dni}
+
+	</select>
+
+
+	<select id="SQL_lista_valida_agraviados_usuario_id"
+		parameterType="agraviadosBeanIbatis" resultType="agraviadosBeanIbatis">
+		select * from tb_agraviados where usuario like #{usuario}
+
+	</select>
+
+
+
+	<select id="SQL_lista_por_dni_agraviado" resultMap="mapAgraviado"
+		parameterType="java.lang.String">
+		select * from tb_agraviados where dni like #{filtro}
+	</select>
+
+
+	<select id="SQL_agraviadosporFotos" parameterType="int"
+		resultType="agraviadosBeanIbatis">
+		select
+		idagraviado as idagraviado,
+		fotos as fotosBytes
+		from
+		tb_agraviados
+		where
+		idagraviado = #{id}
+	</select>
+
+
+
+	<select id="SQL_busca_agraviados" parameterType="int" resultMap="mapAgraviado">
+		select * from tb_agraviados where idagraviado = #{id}
+	</select>
+
+
+	<resultMap id="mapModerador" type="moderadorBeanIbatis">
+		<id property="idmoderador" column="idmoderador" />
+		<result property="nom_apellido" column="nom_apellido" />
+		<result property="cargomoderador" column="cargomoderador" />
+		<result property="entidad" column="entidad" />
+		<result property="foto" column="foto" />
+		<result property="dni" column="dni" />
+		<result property="correo" column="correo" />
+		<result property="celular" column="celular" />
+		<result property="telefono" column="telefono" />
+		<result property="usuario" column="usuario" />
+		<result property="contrasena" column="contrasena" />
+		<association property="distrito" column="idtb_distrito"
+			select="SQL_busca_distritos" />
+	</resultMap>
+
+
+
+	<select id="SQL_lista_validadni_id" parameterType="moderadorBeanIbatis"
+		resultType="moderadorBeanIbatis">
+		select * from tb_moderador where dni=#{dni}
+
+	</select>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	<select id="SQL_listatodos_moderadores" resultMap="mapModerador">
+		select * from tb_moderador where cargomoderador is null or
+		length(cargomoderador) = 0
+	</select>
+
+
+
+	<select id="SQL_listamoderador" parameterType="java.lang.String"
+		resultMap="mapModerador">
+		SELECT * from tb_moderador where dni like #{filtro} and
+		cargomoderador is null or length(cargomoderador) = 0
+	</select>
+
+
+
+
+
+
+
+	<select id="SQL_moderadorporFotos" parameterType="int"
+		resultType="moderadorBeanIbatis">
+		select
+		idmoderador as idmoderador,
+		fotos as fotosBytes
+		from
+		tb_moderador
+		where
+		idmoderador = #{id}
+	</select>
+
+
+
+
+	<delete id="SQL_eliminaModerador" parameterType="int">
+		DELETE FROM
+		tb_moderador where idmoderador = #{idmoderador}
+	</delete>
+
+
+
+
+
+
+
+
+
+	<update id="SQL_actualizaModerador" parameterType="moderadorBeanIbatis">
+		UPDATE
+		tb_moderador
+		SET
+		nom_apellido = #{nom_apellido},
+		entidad = #{entidad},
+		dni = #{dni},
+		correo =
+		#{correo},
+		celular = #{celular},
+		telefono=#{telefono},
+		usuario=#{usuario},
+		contrasena=#{contrasena},
+		fotos=#{fotosBytes},
+		idtb_distrito=#{distrito.idtb_distrito}
+
+		where idmoderador = #{idmoderador}
+	</update>
+
+
+
+
+	<resultMap id="mapDetalle" type="detalleBeanIbatis">
+
+
+		<result property="idtb_distrito" column="idtb_distrito" />
+		<result property="idtb_zona" column="idtb_zona" />
+		<result property="idmoderador" column="idmoderador" />
+	</resultMap>
+
+
+
+
+
+
+
+
+	<select id="SQL_lista_asignazona" parameterType="detalleBeanIbatis"
+		resultType="detalleBeanIbatis">
+
+		select distinct z.idtb_zona as idtb_zona,z.nombre as zona
+		from tb_detalle_asigna_moderador p
+		inner join tb_zona z on p.idtb_zona=z.idtb_zona
+
+
+
+
+
+
+
+	</select>
+
+
+
+
+
+
+
+
+	<select id="SQL_lista_asignadistrito" parameterType="detalleBeanIbatis"
+		resultType="detalleBeanIbatis">
+
+		select distinct d.nombre as distrito,p.idtb_distrito as idtb_distrito
+		from tb_detalle_asigna_moderador p inner join tb_distrito d on
+		p.idtb_distrito=d.idtb_distrito
+		inner join tb_zona z on p.idtb_zona=z.idtb_zona
+
+
+
+
+		<where>
+			<if test="idtb_zona != '-1' ">
+				p.idtb_zona = #{idtb_zona}
+			</if>
+
+
+
+		</where>
+
+
+	</select>
+
+
+
+
+
+	<select id="SQL_lista_asignamoderador" parameterType="detalleBeanIbatis"
+		resultType="detalleBeanIbatis">
+		select distinct de.id_detalle as id_detalle,m.idmoderador,
+		m.nom_apellido as moderador
+		from tb_detalle_asigna_moderador de inner join tb_moderador m on
+		de.idmoderador=m.idmoderador
+		inner join tb_distrito d on de.idtb_distrito=d.idtb_distrito
+		inner join tb_zona z on de.idtb_zona=z.idtb_zona
+
+		<where>
+			<if test="idtb_zona != '-1' ">
+				z.idtb_zona = #{idtb_zona}
+			</if>
+
+			<if test="idtb_distrito != '-1' ">
+				and d.idtb_distrito like #{idtb_distrito}
+			</if>
+
+		</where>
+	</select>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	<resultMap id="mapIncidencias" type="incidenciasBeanIbatis">
+		<id property="idtb_incidencias" column="idtb_incidencias" />
+		<result property="agresor" column="agresor" />
+
+		<result property="fecharegistro" column="fecharegistro" />
+		<result property="fotos" column="fotos" />
+		<result property="descripcion" column="descripcion" />
+
+		<association property="moderador" column="idmoderador"
+			select="SQL_busca_moderador" />
+		<association property="agraviados" column="idagraviado"
+			select="SQL_busca_agraviadosoooooo" />
+		<association property="zona" column="idtb_zona" select="SQL_busca_zona" />
+		<association property="distrito" column="idtb_distrito"
+			select="SQL_busca_distritos" />
+		<association property="tipo" column="idtb_tipo_agravio"
+			select="SQL_busca_tipo_agravio" />
+
+	</resultMap>
+
+
+	<select id="SQL_consultaIncidencias" resultMap="mapIncidencias"
+		parameterType="int">
+		SELECT * from tb_incidencias where
+		idtb_zona=#{zona.idtb_zona} and
+		idtb_distrito=#{distrito.idtb_distrito}
+
+	</select>
+
+
+
+
+
+
+
+
+
+
+	<select id="SQL_busca_moderador" parameterType="int" resultMap="mapModerador">
+		select * from tb_moderador where idmoderador = #{id}
+	</select>
+
+
+	<select id="SQL_busca_tipo_agravio" parameterType="int"
+		resultMap="mapTipoagravio">
+		select * from tb_tipo_agravio where
+		idtb_tipo_agravio= #{id}
+	</select>
+
+	<select id="SQL_busca_zona" parameterType="int" resultMap="mapZona">
+		select * from tb_zona where idtb_zona= #{id}
+	</select>
+
+
+	<select id="SQL_busca_distritos" parameterType="int" resultMap="mapDistritos">
+		select * from tb_distrito where idtb_distrito = #{id}
+	</select>
+
+
+
+
+	<select id="SQL_listatodosincidenciasportipo" resultMap="mapIncidencias"
+		parameterType="int">
+		SELECT * from tb_incidencias where
+		idtb_tipo_agravio=#{tipo.idtb_tipo_agravio} and
+		idmoderador=#{moderador.idmoderador}
+	</select>
+
+
+
+
+
+	<select id="SQL_listatodosincidenciaspormoderador" resultMap="mapIncidencias"
+		parameterType="int">
+		SELECT * from tb_incidencias where
+		idmoderador=#{moderador.idmoderador}
+	</select>
+
+
+
+
+	<select id="SQL_listatodosporcadamoderadorasignado" resultMap="mapIncidencias">
+		SELECT * from tb_incidencias
+	</select>
+
+
+
+
+
+
+
+	<select id="SQL_lista_todos_por_cada_moderador" resultMap="mapTipoIncidencias">
+		SELECT * from tb_tipo_agravio
+	</select>
+
+
+
+
+
+
+
+
+	<select id="SQL_lista_todos_por_tipo_cualquier_moderador"
+		resultMap="mapModerador">
+		SELECT * from tb_moderador
+	</select>
+
+
+
+
+	<select id="SQL_consultadatosDistritoss" parameterType="int"
+		resultType="filtroIncidenciasBeanIbatis">
+
+
+
+
+
+
+
+
+
+		SELECT
+		a.idtb_incidencias as idtb_incidencias,
+
+		d.idtb_distrito as idtb_distrito,
+		d.nombre as distrito
+		FROM tb_incidencias a inner join tb_distrito d on
+		a.idtb_distrito=d.idtb_distrito
+
+		where
+
+		a.idtb_distrito = #{idtb_distrito}
+
+	</select>
+
+
+
+
+
+
+
+
+
+
+
+
+	<select id="SQL_busca_agraviadosoooooo" parameterType="int"
+		resultMap="mapAgraviado">
+		select * from tb_agraviados where idagraviado
+		= #{id}
+	</select>
+
+
+
+
+	<select id="SQL_listatodosincidenciassssss" resultMap="mapIncidencias">
+		SELECT *
+		from tb_incidencias 
+	</select>
+
+
+	<select id="SQL_incidenciasporFotos" parameterType="int"
+		resultType="incidenciasBeanIbatis">
+		select
+		idtb_incidencias as idtb_incidencias,
+		fotos as fotosBytes
+		from
+		tb_incidencias
+		where
+		idtb_incidencias = #{id}
+	</select>
+
+
+
+
+
+	<!-- <select id="SQL_consultaIncidencias" parameterType="filtroIncidenciasBeanIbatis" 
+		resultType="filtroIncidenciasBeanIbatis"> -->
+	<!-- SELECT -->
+	<!-- a.idtb_incidencias as idtb_incidencias, -->
+	<!-- a.agresor as agresor, -->
+	<!-- a.fecharegistro as fecharegistro, -->
+	<!-- a.fotos as fotos, -->
+	<!-- a.descripcion as descripcion, -->
+	<!-- p.nom_apellido as agraviado, -->
+	<!-- p.idagraviado as idagraviado, -->
+
+	<!-- z.nombre as zona, -->
+	<!-- z.idtb_zona as idtb_zona, -->
+	<!-- t.idtb_tipo_agravio as idtb_tipo_agravio, -->
+	<!-- t.nombre as tipo, -->
+	<!-- d.idtb_distrito as idtb_distrito, -->
+	<!-- d.nombre as distrito -->
+
+	<!-- FROM tb_incidencias a inner join tb_agraviados p on a.idagraviado = 
+		p.idagraviado -->
+
+	<!-- inner join tb_zona z on z.idtb_zona=a.idtb_zona -->
+	<!-- inner join tb_tipo_agravio t on a.idtb_tipo_agravio=t.idtb_tipo_agravio -->
+	<!-- inner join tb_distrito d on a.idtb_distrito=d.idtb_distrito -->
+
+	<!-- <where> -->
+	<!-- <if test="fzona != '-1' "> -->
+	<!-- a.idtb_zona = #{fzona} -->
+	<!-- </if> -->
+	<!-- <if test="fdistrito != '-1' "> -->
+	<!-- and a.idtb_distrito = #{fdistrito} -->
+	<!-- </if> -->
+	<!-- </where> -->
+	<!-- </select> -->
+
+
+
+
+	<update id="SQL_actualizaAsignaModerador" parameterType="incidenciasBeanIbatis">
+		UPDATE
+		tb_incidencias
+		SET
+		idmoderador = #{moderador.idmoderador}
+		where idtb_incidencias =
+		#{idtb_incidencias}
+	</update>
+
+
+
+
+
+
+
+
+
+
+
+
+
+	<select id="SQL_consultaIncidenciassssssss" parameterType="int"
+		resultMap="mapIncidencias">
+		SELECT * FROM tb_incidencias
+
+
+		where idtb_incidencias = #{idtb_incidencias}
+
+	</select>
+
+
+
+
+	<select id="SQL_consultaIncidenciasModeradorr" parameterType="int"
+		resultMap="mapModerador">
+		select * from
+		tb_moderador where idmoderador=#{id}
+	</select>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	<!-- <select id="SQL_incidenciasasignaporFotos" parameterType="int" resultType="asignaFotosEvidenciaBeanIbatis"> -->
+	<!-- select -->
+	<!-- id_tbasigna_foto as id_tbasigna_foto, -->
+
+	<!-- idtb_incidencias as idtb_incidencias, -->
+	<!-- fotos as fotosBytes -->
+
+	<!-- from -->
+	<!-- tbasigna_foto -->
+	<!-- where -->
+	<!-- idtb_incidencias = #{id} -->
+	<!-- </select> -->
+
+
+
+
+
+	<resultMap id="mapAsignaFotos" type="asignaFotosEvidenciaBeanIbatis">
+		<id property="id_tbsigna_foto" column="id_tbsigna_foto" />
+		<result property="fotos" column="fotos" />
+		<association property="incidencia" column="idtb_incidencias"
+			select="SQL_busca_incidencias" />
+	</resultMap>
+
+
+
+
+	<select id="SQL_lista_por_id_incidencias" parameterType="int"
+		resultType="asignaFotosEvidenciaBeanIbatis">
+		select
+		id_tbasigna_foto as id_tbasigna_foto,
+		idtb_incidencias as idtb_incidencias
+		from tbasigna_foto where idtb_incidencias = #{id}
+	</select>
+
+
+
+
+	<select id="SQL_busca_asigna_Fotos" parameterType="int"
+		resultType="asignaFotosEvidenciaBeanIbatis">
+		select
+		id_tbasigna_foto as id_tbasigna_foto,
+		fotos as fotosBytes,
+		idtb_incidencias as idtb_incidencias
+		from tbasigna_foto where idtb_incidencias = #{idtb_incidencias}
+	</select>
+
+
+
+
+	<select id="SQL_buscaPK_asigna_Fotos" parameterType="int"
+		resultType="asignaFotosEvidenciaBeanIbatis">
+		select
+		id_tbasigna_foto as id_tbasigna_foto,
+		fotos as fotosBytes,
+		idtb_incidencias as idtb_incidencias
+		from tbasigna_foto where id_tbasigna_foto = #{id}
+	</select>
+
+	<select id="SQL_BUSCA_FOTO_POR_Incidencia" parameterType="int"
+		resultType="asignaFotosEvidenciaBeanIbatis">
+		select
+		id_tbasigna_foto as id_tbasigna_foto
+		from tbasigna_foto where idtb_incidencias = #{id}
+	</select>
+
+
+
+
+
+
+	<select id="SQL_consultaIncidenciasasignaFotosID" parameterType="int"
+		resultMap="mapIncidencias">
+		SELECT * FROM tb_incidencias
+
+
+		where idtb_incidencias = #{id}
+
+	</select>
+
+
+
+
+
+
+
+
+
+
+	<select id="SQL_busca_incidencias" parameterType="int"
+		resultMap="mapIncidencias">
+		select * from tb_incidencias where
+		idtb_incidencias = #{id}
+	</select>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	<insert id="SQL_insertaRegistroasignafotos" parameterType="asignaFotosEvidenciaBeanIbatis"
+		keyProperty="id_tbasigna_foto" useGeneratedKeys="true">
+		insert into
+		tbasigna_foto(fotos,idtb_incidencias,fecharegistro)
+		values
+		(#{fotosBytes},#{incidencia.idtb_incidencias},curdate())
+	</insert>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	<insert id="SQL_insertaAgraviadoswebservice" parameterType="agraviadosBeanIbatis"
+		keyProperty="idagraviado" useGeneratedKeys="true">
+
+		insert into tb_agraviados
+		(usuario,contrasena)
+		values
+		(#{usuario},#{contrasena})
+	</insert>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	<select id="SQL_lista_asignazonalasnuevas" parameterType="distritobeanIbatis"
+		resultType="distritobeanIbatis">
+
+		select distinct z.idtb_zona as idtb_zona,z.nombre as zona
+		from tb_distrito p
+		inner join tb_zona z on p.idtb_zona=z.idtb_zona
+
+
+
+
+
+
+
+	</select> 
+	<select id="SQL_lista_asignadistritonuevas" parameterType="distritobeanIbatis"
+		resultType="distritobeanIbatis">
+
+		select distinct d.idtb_distrito as idtb_distrito,d.nombre as nombre
+		from tb_distrito d 	inner join tb_zona z on d.idtb_zona=z.idtb_zona
+
+
+
+
+		<where>
+			<if test="idtb_zona != '-1' ">
+				d.idtb_zona = #{idtb_zona}
+			</if>
+
+
+
+		</where>
+
+
+	</select>
+
+
+
+
+
+
+
+
+
+
+
+
+	<select id="SQL_lista_asignamoderadornuevas" parameterType="distritobeanIbatis"
+		resultType="distritobeanIbatis">
+
+select  de.idmoderador as idmoderador,de.nom_apellido as moderador
+from tb_moderador de inner join tb_distrito d on de.idtb_distrito=d.idtb_distrito
+inner join tb_zona z on d.idtb_zona=z.idtb_zona
+		<where>
+			<if test="idtb_zona != '-1' ">
+				z.idtb_zona = #{idtb_zona}
+			</if>
+
+			<if test="idtb_distrito != '-1' ">
+				and d.idtb_distrito like #{idtb_distrito}
+			</if>
+
+		</where>
+
+
+	</select>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</mapper>
+
+
+
+
+
